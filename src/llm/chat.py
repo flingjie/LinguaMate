@@ -1,18 +1,18 @@
-from config import MODEL_NAME, API_BASE
+from config import ModelName, API_BASE
 from litellm import completion
 from utils.response import split_think_content
 from log import logger
 
 
-def get_response_from_llm(prompt):
+def get_response_from_llm(prompt, model_name=ModelName.QWEN.value):
     messages = [{"role": "user", "content": prompt}]
-    return chat_with_llm(messages)
+    return chat_with_llm(messages, model_name)
 
 
-def chat_with_llm(messages):
+def chat_with_llm(messages, model_name=ModelName.QWEN.value):
     try:
         response = completion(
-            model=MODEL_NAME, 
+            model=model_name, 
             messages=messages,
             api_base=API_BASE
         )

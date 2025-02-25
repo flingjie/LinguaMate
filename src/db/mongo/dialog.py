@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from config import MONGO_DIALOG_COL_NAME
 from .base import db
 
@@ -21,7 +21,11 @@ def save_dialog(user_id: str,
 
 
 def get_recent_dialogs(user_id: str, limit: int = 6):
-    dialogs = dialog_col.find({"user_id": user_id}).sort("time", -1).limit(limit)
+    ten_mins_ago = datetime.now() - timedelta(minutes=10)
+    dialogs = dialog_col.find({
+        "user_id": user_id,
+        "time": {"$gte": ten_mins_ago}
+    }).sort("time", -1).limit(limit)
     messages = []
     for item in dialogs:
         messages.append({
