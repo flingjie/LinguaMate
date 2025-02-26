@@ -15,7 +15,6 @@ If there is a syntax error or unreasonable expression, 0 is returned, otherwise 
 ## user input
 {text}
 """
-    print(prompt)
     result = get_response_from_llm(prompt)
     return result == '1'
 
@@ -29,7 +28,7 @@ point out problems and provide suggestions from a second-person perspective.
 ## user input
 {text}
 """
-    result = get_response_from_llm(prompt, model_name=ModelName.DEEPSEEK.value)
+    result = get_response_from_llm(prompt)
     return result
 
 if __name__ == "__main__":

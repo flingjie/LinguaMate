@@ -8,3 +8,5 @@ def get_client():
         .log_level(lark.LogLevel.INFO) \
         .build()
     return client
+
+client = get_client()

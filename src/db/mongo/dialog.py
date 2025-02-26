@@ -33,3 +33,4 @@ def get_recent_dialogs(user_id: str, limit: int = 6):
             'content': item['content']
         })
     return messages
+
