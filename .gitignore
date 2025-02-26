@@ -11,4 +11,4 @@ wheels/
 .env
 *.log
 output/
-src/assets/
+src/asset/

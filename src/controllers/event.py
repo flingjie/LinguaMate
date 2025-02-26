@@ -5,21 +5,20 @@ import json
 from db import save_dialog, get_recent_dialogs
 from agents.chatter import get_chat_respose
 from agents.grammar_checker import is_grammer_right, get_suggestion
-from clients.feishu.message import send_text_to_user
+from agents.word_hint import get_word_hint
+from clients.feishu.message import send_text_to_user, send_image_to_user
 import threading
+from utils.sd import generate_image
 
 
-def send_msg_to_user(user_id, msg, msg_type):
-    try:
-    
-        if msg_type == 'text':
-            send_text_to_user(user_id, msg)
-        elif msg_type == 'image':
-            pass
-        else:
-            logger.warning(f'unsupport type {msg_type}')
-    except Exception as e:
-        logger.exception(f"fail to send msg: {e}")
+def handle_hint_message(open_id, text):
+    word = text.split(' ')[1]
+    hint = get_word_hint(word)
+    send_text_to_user(open_id, hint)
+    # logger.info(f'hint: {hint}')
+    filepath = generate_image(hint)
+    send_image_to_user(open_id, filepath)
+
 
 
 def handle_message(open_id, msg_type, content) -> None:
@@ -28,19 +27,22 @@ def handle_message(open_id, msg_type, content) -> None:
             data = json.loads(content)
             text = data['text']
             
-        
+            if text.startswith('hint'):
+                handle_hint_message(open_id, text)
+                return
+            
             if is_grammer_right(text):
                 history = get_recent_dialogs(user_id=open_id)
                 save_dialog(user_id=open_id, content=text, role='user')
                 response = get_chat_respose(text, history)
                 save_dialog(user_id=open_id, content=response, role='assistant')
-                send_msg_to_user(open_id, response, 'text')
+                send_text_to_user(open_id, response, 'text')
                 # logger.debug(f'messages: {messages}')
             else:
                 suggestion = get_suggestion(text)
                 save_dialog(user_id=open_id, content=text, role='user')
                 save_dialog(user_id=open_id, content=suggestion, role='assistant')
-                send_msg_to_user(open_id, suggestion, 'text')
+                send_text_to_user(open_id, suggestion, 'text')
             
         else:
             logger.info(f'ignore msg type:{msg_type}')
