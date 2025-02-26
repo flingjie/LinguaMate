@@ -2,7 +2,7 @@ import lark_oapi as lark
 from lark_oapi.api.im.v1 import *
 from log import logger
 import json
-from db import save_dialog, get_recent_dialogs
+from storage import save_dialog, get_recent_dialogs
 from agents.chatter import get_chat_respose
 from agents.grammar_checker import is_grammer_right, get_suggestion
 from agents.word_hint import get_word_hint
@@ -27,7 +27,7 @@ def handle_message(open_id, msg_type, content) -> None:
             data = json.loads(content)
             text = data['text']
             
-            if text.startswith('hint'):
+            if text.startswith('explain'):
                 handle_hint_message(open_id, text)
                 return
             

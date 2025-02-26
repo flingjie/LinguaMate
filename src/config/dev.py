@@ -18,6 +18,7 @@ API_BASE = 'http://localhost:11434'
 MONGO_URL = 'mongodb://localhost:27017/'
 MONGO_DB_NAME = 'lucy'
 MONGO_DIALOG_COL_NAME = 'dialog'
+MONGO_NEWS_COL_NAME = 'news'
 
 
 class ModelName(Enum):
