@@ -2,7 +2,7 @@ from llm.chat import get_response_from_llm
 from config import ModelName
 
 
-def is_grammer_right(text):
+def is_grammar_correct(text):
     prompt = f"""
 You are a professional English teacher. 
 Your job is to determine whether the user input contains grammatical errors and whether the second-person expression is reasonable. 
@@ -18,7 +18,7 @@ If there is a syntax error or unreasonable expression, 0 is returned, otherwise 
     return result == '1'
 
 
-def get_suggestion(text):
+def get_grammar_suggestions(text):
     prompt = f"""
 You are a professional English teacher. 
 Your task is to analyze user input for grammatical errors or unreasonable expressions, 
@@ -33,8 +33,8 @@ point out problems and provide suggestions from a second-person perspective.
 if __name__ == "__main__":
     text = 'I am thinking the question you said.'
     # text = 'hi'
-    result = is_grammer_right(text)
+    result = is_grammar_correct(text)
     print(result)
-    result = get_suggestion(text)
+    result = get_grammar_suggestions(text)
     print(result)
     

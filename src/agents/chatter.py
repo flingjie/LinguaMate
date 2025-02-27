@@ -2,7 +2,7 @@ from llm.chat import get_response_from_llm
 from log import logger
 
 
-def get_chat_respose(dialogs, user_input):
+def get_chat_response(dialogs, user_input):
     history = "\n".join([f'{item["role"]}:{item['content']}' for item in dialogs])
     # logger.debug(f'history: {history}')
     prompt = f"""
@@ -32,6 +32,6 @@ if __name__ == "__main__":
         "content": "Yeah, I know the feeling. Any plans for the weekend?"
     }]
     user_input = "Thinking of going for a hike. Wanna join?"
-    result = get_chat_respose(history, user_input)
+    result = get_chat_response(history, user_input)
     print(result)
 
