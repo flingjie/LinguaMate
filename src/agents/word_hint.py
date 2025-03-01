@@ -1,6 +1,8 @@
 from llm.chat import get_response_from_llm
 import random
 from log import logger
+from config import ModelName
+import json_repair
 
 
 def get_word_meaning(word):
@@ -11,7 +13,7 @@ def get_word_meaning(word):
     ## word
     {word}
     """
-    result = get_response_from_llm(prompt)
+    result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
     return result
 
 
@@ -42,8 +44,11 @@ def get_word_hint(word, meaning, theme="realistic"):
     # Combine everything into a final prompt
     prompt = f"""
     {scene_description}\n {style_description}
+
+    ## Restrictions
+    - The Result should be less than 500 words.
     """
-    result = get_response_from_llm(prompt)
+    result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
     return result
 
 if __name__ == "__main__":

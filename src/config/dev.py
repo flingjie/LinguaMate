@@ -13,7 +13,7 @@ APP_ENCRYPT_KEY = os.getenv('FEISHU_APP_VERIFICATION_TOKEN')
 LOG_PATH = '../log'
 
 
-API_BASE = 'http://localhost:11434'
+
 
 MONGO_URL = 'mongodb://localhost:27017/'
 MONGO_DB_NAME = 'lucy'
@@ -28,3 +28,12 @@ class ModelName(Enum):
     DEEPSEEK7B = 'ollama/deepseek-r1:7b'
     DEEPSEEK14B = 'ollama/deepseek-r1:14b'
     QWEN = 'ollama/qwen2.5:7b'
+    ARK_DEEPSEEKV3 = 'volcengine/deepseek-v3-241226'
+
+
+API_BASE_MAP = {
+    ModelName.DEEPSEEK7B.value: 'http://localhost:11434',
+    ModelName.DEEPSEEK14B.value: 'http://localhost:11434',
+    ModelName.QWEN.value: 'http://localhost:11434',
+    ModelName.ARK_DEEPSEEKV3.value: 'https://ark.cn-beijing.volces.com/api/v3',
+}

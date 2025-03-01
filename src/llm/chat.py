@@ -1,4 +1,4 @@
-from config import ModelName, API_BASE
+from config import ModelName, API_BASE_MAP
 from litellm import completion
 from utils.response import split_think_content
 from log import logger
@@ -11,10 +11,12 @@ def get_response_from_llm(prompt, model_name=ModelName.QWEN.value):
 
 def chat_with_llm(messages, model_name=ModelName.QWEN.value):
     try:
+        # logger.debug(f"model_name: {model_name}")
+        api_base = API_BASE_MAP[model_name]
         response = completion(
             model=model_name, 
             messages=messages,
-            api_base=API_BASE
+            api_base=api_base
         )
         text = response.choices[0].message.content
         think, result = split_think_content(text)
