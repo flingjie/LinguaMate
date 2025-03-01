@@ -6,6 +6,8 @@ import time
 import os
 from log import logger
 from config.dev import IMAGE_OUTPUT_DIR
+
+
 def generate_image(word, prompt, negative_prompt="watermark, ugly, mutation, lowres, low quality, extra limbs, text, signature, artist name, bad anatomy, poorly drawn, malformed, deformed, blurry, out of focus, noise, dust", 
                    steps=20, width=512, height=512):
     """

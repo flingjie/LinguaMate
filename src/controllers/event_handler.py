@@ -6,7 +6,8 @@ from storage import save_dialog, get_recent_dialogs
 from agents.chatter import get_chat_response
 from agents.grammar_checker import is_grammar_correct, get_grammar_suggestions
 from agents.word_hint import get_word_hint, get_word_meaning
-from clients.feishu.message import send_text_to_user, send_image_to_user
+from clients.feishu.message import send_text_to_user, send_image_to_user, get_message_by_id, send_audio_to_user, reply_audio_to_message
+from utils.tts import text2audio
 import threading
 from utils.sd import generate_image
 import os
@@ -22,11 +23,11 @@ def get_image_from_cache(word):
 def handle_hint_message(open_id, text):
     word = text.split(' ')[1]
     meaning = get_word_meaning(word)
-    hint = get_word_hint(word, meaning)
     send_text_to_user(open_id, meaning)
     # logger.info(f'hint: {hint}')
     filepath = get_image_from_cache(word)
     if not filepath:
+        hint = get_word_hint(word, meaning)
         filepath = generate_image(word, hint)
     send_image_to_user(open_id, filepath)
 
@@ -62,6 +63,23 @@ def handle_message(open_id, msg_type, content) -> None:
         logger.exception(f"Error handling text message: {e}")
 
 
+def handle_reaction_message(open_id, message_id):
+    message = get_message_by_id(message_id)
+    logger.info(f'message: {message}')
+    for item in message.items:
+        if item.msg_type == 'text':
+            try:
+                body = json.loads(item.body.content)
+                text = body['text']
+                # logger.info(f'text: {text}')
+                audio_path, duration = text2audio(text)
+                reply_audio_to_message(message_id, audio_path, duration)
+            except Exception as e:
+                logger.exception(e)
+        else:
+            logger.info(f'ignore item type:{item.msg_type}')
+
+
 def do_p2_im_message_receive_v1(data: lark.im.v1.P2ImMessageReceiveV1) -> None:
     # logger.info(f'[ do_p2_im_message_receive_v1 access ], data: {lark.JSON.marshal(data, indent=2)}')
     try:
@@ -69,6 +87,18 @@ def do_p2_im_message_receive_v1(data: lark.im.v1.P2ImMessageReceiveV1) -> None:
         open_id = event.sender.sender_id.open_id
         msg_type = event.message.message_type
         thread = threading.Thread(target=handle_message, args=(open_id, msg_type, event.message.content))
+        thread.start()
+    except Exception as e:
+        logger.exception(e)
+
+
+def do_p2_im_message_reaction_v1(data: lark.im.v1.P2ImMessageReactionCreatedV1) -> None:
+    # logger.info(f'[ do_p2_im_message_reaction_v1 access ], data: {lark.JSON.marshal(data, indent=2)}')
+    try:
+        event = data.event
+        message_id = event.message_id
+        open_id = event.user_id.open_id
+        thread = threading.Thread(target=handle_reaction_message, args=(open_id, message_id))
         thread.start()
     except Exception as e:
         logger.exception(e)

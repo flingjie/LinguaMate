@@ -38,11 +38,11 @@ def get_word_hint(word, meaning, theme="realistic"):
     }
 
     style_description = styles.get(theme, styles["fantasy"])
-    logger.info(f"style_description: {style_description}")
+    # logger.info(f"style_description: {style_description}")
     # Combine everything into a final prompt
     prompt = f"""
-{scene_description}\n {style_description}
-"""
+    {scene_description}\n {style_description}
+    """
     result = get_response_from_llm(prompt)
     return result
 

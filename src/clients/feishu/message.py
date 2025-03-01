@@ -124,6 +124,51 @@ def send_audio_to_user(receive_id, filepath, duration):
     lark.logger.info(lark.JSON.marshal(create_message_resp.data, indent=4))
 
 
+def reply_audio_to_message(message_id, filepath, duration):
+    logger.debug(f'message_id: {message_id}, filepath: {filepath}, duration: {duration}')
+    
+    file_key = upload_file(filepath, duration, 'opus')
+    if not file_key:
+        logger.error(f'upload_file failed, filepath: {filepath}, duration: {duration}')
+        return
+
+    request: ReplyMessageRequest = ReplyMessageRequest.builder() \
+        .message_id(message_id) \
+        .request_body(ReplyMessageRequestBody.builder()
+            .content(json.dumps({'file_key': file_key}))
+            .msg_type("audio")
+            .reply_in_thread(False)
+            .build()) \
+        .build()
+
+    # 发起请求
+    response: ReplyMessageResponse = client.im.v1.message.reply(request)
+
+    # 处理失败返回
+    if not response.success():
+        lark.logger.error(
+            f"client.im.v1.message.reply failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}, resp: \n{json.dumps(json.loads(response.raw.content), indent=4, ensure_ascii=False)}")
+        return
+
+    # 处理业务结果
+    lark.logger.info(lark.JSON.marshal(response.data, indent=4))
+
+
+def get_message_by_id(message_id):
+    request: GetMessageRequest = GetMessageRequest.builder() \
+        .message_id(message_id) \
+        .build()
+
+    response: GetMessageResponse = client.im.v1.message.get(request)
+
+    if not response.success():
+        lark.logger.error(
+            f"client.im.v1.message.get failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}, resp: \n{json.dumps(json.loads(response.raw.content), indent=4, ensure_ascii=False)}")
+        return
+
+    lark.logger.info(lark.JSON.marshal(response.data, indent=4))
+    return response.data
+
 if __name__ == "__main__":
     receiver_id = 'ou_f5804cb29e2f965b76528499d80b089e'
     # content = 'hi'
