@@ -1,5 +1,4 @@
 from llm.chat import get_response_from_llm
-from config import ModelName
 
 
 def is_grammar_correct(text):

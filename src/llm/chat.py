@@ -18,7 +18,8 @@ def chat_with_llm(messages, model_name=ModelName.QWEN.value):
         )
         text = response.choices[0].message.content
         think, result = split_think_content(text)
-        logger.debug(think)
+        if think:
+            logger.debug(think)
         return result
         
     except Exception as e:

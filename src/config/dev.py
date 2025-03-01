@@ -22,5 +22,6 @@ MONGO_NEWS_COL_NAME = 'news'
 
 
 class ModelName(Enum):
-    DEEPSEEK = 'ollama/deepseek-r1:14b'
+    DEEPSEEK7B = 'ollama/deepseek-r1:7b'
+    DEEPSEEK14B = 'ollama/deepseek-r1:14b'
     QWEN = 'ollama/qwen2.5:7b'

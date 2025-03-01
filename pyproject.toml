@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "chattts>=0.2.3",
+    "feedparser>=6.0.11",
+    "html2text>=2024.2.26",
     "lark-oapi>=1.4.10",
     "litellm>=1.61.15",
     "loguru>=0.7.3",
@@ -14,6 +16,7 @@ dependencies = [
     "pillow>=11.1.0",
     "pymongo>=4.11.1",
     "python-dotenv>=1.0.1",
+    "socksio>=1.0.0",
     "soundfile>=0.13.1",
     "torch>=2.6.0",
     "torchaudio>=2.6.0",

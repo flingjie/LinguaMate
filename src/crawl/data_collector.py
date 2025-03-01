@@ -1,5 +1,5 @@
 from typing import List
-from .data_sources.source_interface import DataSource
+from .data_sources.source_interface import DataSource, News
 from .data_observer import DataObserver
 
 class DataCollector:
@@ -13,11 +13,11 @@ class DataCollector:
     def add_observer(self, observer: DataObserver):
         self._observers.append(observer)
 
-    def notify_observers(self, data: str):
+    def notify_observers(self, data: List[News]):
         for observer in self._observers:
             observer.update(data)
 
-    def collect_data(self):
+    def fetch_data(self):
         for source in self._data_sources:
-            data = source.collect_data()
+            data = source.fetch_data()
             self.notify_observers(data)

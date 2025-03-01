@@ -1,27 +1,10 @@
-from datetime import datetime, timedelta
 from config import MONGO_NEWS_COL_NAME
 from .base import db
-
+from crawl.data_sources.source_interface import News
 
 news_col = db[MONGO_NEWS_COL_NAME]
 
 
-def save_dialog(title: str,
-                content: str,
-                author: str,
-                summary: str,
-                link: str,
-                from_source: str,
-                tags: list=[]
-                ):
-    doc = {
-        'title': title,
-        'content': content,
-        'author': author,
-        'summary': summary,
-        'link': link,
-        'from_source': from_source,
-        'tags': tags,
-        'time': datetime.now()
-    }
+def save_news(news: News):
+    doc = news.to_dict()
     return news_col.insert_one(doc)
