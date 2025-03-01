@@ -5,10 +5,9 @@ from PIL import Image
 import time
 import os
 from log import logger
-
-OUTPUT_DIR = "../output/image"
-
-def generate_image(prompt, negative_prompt="", steps=20, width=512, height=512):
+from config.dev import IMAGE_OUTPUT_DIR
+def generate_image(word, prompt, negative_prompt="watermark, ugly, mutation, lowres, low quality, extra limbs, text, signature, artist name, bad anatomy, poorly drawn, malformed, deformed, blurry, out of focus, noise, dust", 
+                   steps=20, width=512, height=512):
     """
     调用Stable Diffusion WebUI的API生成图片
     
@@ -45,8 +44,8 @@ def generate_image(prompt, negative_prompt="", steps=20, width=512, height=512):
         image = Image.open(io.BytesIO(image_bytes))
         
         # 保存图片到OUTPUT_DIR目录
-        os.makedirs(OUTPUT_DIR, exist_ok=True)  # 确保输出目录存在
-        filepath = os.path.join(OUTPUT_DIR, f"generated_image_{int(time.time())}.png")
+        os.makedirs(IMAGE_OUTPUT_DIR, exist_ok=True)  # 确保输出目录存在
+        filepath = os.path.join(IMAGE_OUTPUT_DIR, f"{word}.png")
         image.save(filepath)
         
     except requests.exceptions.RequestException as e:

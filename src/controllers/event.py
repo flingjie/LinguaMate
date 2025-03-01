@@ -5,18 +5,29 @@ import json
 from storage import save_dialog, get_recent_dialogs
 from agents.chatter import get_chat_response
 from agents.grammar_checker import is_grammar_correct, get_grammar_suggestions
-from agents.word_hint import get_word_hint
+from agents.word_hint import get_word_hint, get_word_meaning
 from clients.feishu.message import send_text_to_user, send_image_to_user
 import threading
 from utils.sd import generate_image
+import os
+from config.dev import IMAGE_OUTPUT_DIR
 
+
+def get_image_from_cache(word):
+    filepath = os.path.join(IMAGE_OUTPUT_DIR, f"{word}.png")
+    if os.path.exists(filepath):
+        return filepath
+    return None
 
 def handle_hint_message(open_id, text):
     word = text.split(' ')[1]
-    hint = get_word_hint(word)
-    send_text_to_user(open_id, hint)
+    meaning = get_word_meaning(word)
+    hint = get_word_hint(word, meaning)
+    send_text_to_user(open_id, meaning)
     # logger.info(f'hint: {hint}')
-    filepath = generate_image(hint)
+    filepath = get_image_from_cache(word)
+    if not filepath:
+        filepath = generate_image(word, hint)
     send_image_to_user(open_id, filepath)
 
 

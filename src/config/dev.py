@@ -20,6 +20,9 @@ MONGO_DB_NAME = 'lucy'
 MONGO_DIALOG_COL_NAME = 'dialog'
 MONGO_NEWS_COL_NAME = 'news'
 
+OUTPUT_DIR = "../output"
+IMAGE_OUTPUT_DIR = os.path.join(OUTPUT_DIR, "image")
+
 
 class ModelName(Enum):
     DEEPSEEK7B = 'ollama/deepseek-r1:7b'
