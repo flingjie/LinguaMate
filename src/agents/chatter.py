@@ -2,7 +2,7 @@ from llm.chat import get_response_from_llm
 from log import logger
 
 
-def get_chat_response(dialogs, user_input):
+def get_chat_response(user_input, dialogs):
     history = "\n".join([f'{item["role"]}:{item['content']}' for item in dialogs])
     # logger.debug(f'history: {history}')
     prompt = f"""

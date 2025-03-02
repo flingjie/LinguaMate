@@ -7,7 +7,8 @@ import json_repair
 
 
 def generate_questions(content):
-    prompt = f"""
+    return [{'question': 'What are the three qualities that the work you choose should have, according to the blog?', 'knowledge_point': 'The work you choose should have three qualities: natural aptitude, deep interest, and scope to do great work.'}, {'question': 'What is the significance of curiosity in the process of doing great work, as described in the blog?', 'knowledge_point': 'Curiosity is described as both the engine and the rudder of great work, driving you and showing you what to work on.'}, {'question': 'According to the blog, what are the four steps to doing great work?', 'knowledge_point': 'The four steps are: choose a field, learn enough to get to the frontier, notice gaps, and explore promising ones.'}, {'question': 'What does the blog suggest about the relationship between originality and curiosity?', 'knowledge_point': 'Curiosity and originality are closely related; curiosity feeds originality by giving it new things to work on, and curiosity itself is a kind of originality.'}, {'question': "What is the blog's advice on how to deal with setbacks while working on ambitious projects?", 'knowledge_point': 'The blog advises considering setbacks as part of the process and not letting them destroy morale, suggesting that solving hard problems always involves some backtracking.'}]
+    prompt = """
     You are an experienced programmer. Your task is to generate 5 test questions based on the provided blog content.
     First, analyze the entire article to identify the core knowledge points. Then, select 5 knowledge points from these and generate test questions based on them.
     Finally, return 5 question descriptions in a JSON list. 
@@ -21,8 +22,7 @@ def generate_questions(content):
     ]
     
     ## Blog Content:
-    {content}
-    """
+    """ + content
 
     # logger.debug(prompt)
     result = ''

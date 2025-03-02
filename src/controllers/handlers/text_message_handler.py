@@ -11,6 +11,7 @@ from cache.user_state import UserState
 from log import logger
 from cache.user_state import get_next_question
 from agents.learning import check_answer
+from cache.question import get_question, get_knowledge_point
 
 
 class TextMessageHandler(MessageHandler):
@@ -42,7 +43,7 @@ class TextMessageHandler(MessageHandler):
     def _handle_check_learning(self, open_id: str, text: str) -> None:
         next_question, last_question = get_next_question(open_id)
         if last_question:
-            feedback = check_answer(last_question['question'], last_question['knowledge_point'], text)
+            feedback = check_answer(get_question(last_question), get_knowledge_point(last_question), text)
             send_text_to_user(open_id, feedback)
         if next_question:
             send_text_to_user(open_id, next_question)
