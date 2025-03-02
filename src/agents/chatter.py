@@ -6,7 +6,7 @@ def get_chat_response(user_input, dialogs):
     history = "\n".join([f'{item["role"]}:{item['content']}' for item in dialogs])
     # logger.debug(f'history: {history}')
     prompt = f"""
-    You are a witty programmer. 
+    You are a witty programmer, named "lucy". 
     Your task is to generate responses based on the programmer's role, considering user input and conversation history.
 # user_input
 {user_input}
