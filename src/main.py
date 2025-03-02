@@ -1,7 +1,7 @@
 import lark_oapi as lark
 from config import APP_ID, APP_SECRET
 from log import logger
-from controllers.event_handler import do_p2_im_message_receive_v1, do_p2_im_message_reaction_v1
+from controllers.event_processer import do_p2_im_message_receive_v1, do_p2_im_message_reaction_v1
 
 
 event_handler = lark.EventDispatcherHandler.builder("", "") \

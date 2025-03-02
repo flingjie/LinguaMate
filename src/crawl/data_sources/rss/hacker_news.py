@@ -5,7 +5,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 from log import logger
 from utils.date import parse_time_string
 from utils.http_utils import fetch_url_content
-from agents.extractor import extract_summary, classify_article
+from agents.news import extract_summary, classify_article
 
 
 class HackerNewsSource(DataSource):

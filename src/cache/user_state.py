@@ -3,7 +3,7 @@ from enum import Enum
 
 class UserState(Enum):
     CHAT = 'chat'
-    CHECK_LEARNING = 'check_learning'
+    LEARNING = 'learning'
 
 _USER_CONTEXT = {}
 
@@ -21,25 +21,29 @@ def init_questions(user_id, content, questions):
     if user_id not in _USER_CONTEXT:
         _USER_CONTEXT[user_id] = {'state': UserState.CHAT}
     _USER_CONTEXT[user_id]['content'] = content
+    _USER_CONTEXT[user_id]['current_question'] = ''
     _USER_CONTEXT[user_id]['questions'] = questions
 
 
-def set_cur_question(user_id, question):
-    _USER_CONTEXT[user_id]['cur_question'] = question
+def set_current_question(user_id, question):
+    _USER_CONTEXT[user_id]['current_question'] = question
 
-def get_cur_question(user_id):
-    if 'cur_question' not in _USER_CONTEXT[user_id]:
+def get_current_question(user_id):
+    if 'current_question' not in _USER_CONTEXT[user_id]:
         return ''
-    return _USER_CONTEXT[user_id]['cur_question']
+    return _USER_CONTEXT[user_id]['current_question']
 
 def get_next_question(user_id):
     state = get_user_state(user_id)
-    if state != UserState.CHECK_LEARNING:
-        return ''
+    if state != UserState.LEARNING:
+        return '', {}
     if 'questions' not in _USER_CONTEXT[user_id]:
-        return ''
-    next_question = _USER_CONTEXT[user_id]['questions'].pop(0)
-    set_cur_question(user_id, next_question)
-    content = _USER_CONTEXT[user_id]['content']
-    return next_question, content
+        return '', {}
+    last_question = _USER_CONTEXT[user_id].get('current_question', {})
+    questions = _USER_CONTEXT[user_id]['questions']
+    if not questions:
+        return '', {}
+    next_question = questions.pop(0)
+    set_current_question(user_id, next_question)
+    return next_question.get('question', ''), last_question
 

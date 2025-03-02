@@ -13,7 +13,7 @@ def get_word_meaning(word):
     ## word
     {word}
     """
-    result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
+    result = get_response_from_llm(prompt)
     return result
 
 
@@ -46,7 +46,7 @@ def get_word_hint(word, meaning, theme="realistic"):
     {scene_description}\n {style_description}
 
     ## Restrictions
-    - The Result should be less than 500 words.
+    - The Result should be less than 600 words.
     """
     result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
     return result

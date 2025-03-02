@@ -34,20 +34,20 @@ def generate_questions(content):
     return result
 
 
-def check_answer(question, knowledge_point, reply):
+def check_answer(question, knowledge_point, user_input):
     prompt = f"""
-    You are a content analysis expert. Your task is to score the user's reply based on the question and the knowledge point. 
+    You are a content analysis expert. Your task is to score the user's input based on the question and the knowledge point. 
     Return a value between 1 and 10, and provide a concise statement indicating which points are correct and which points need improvement.
     The statement should be from the second-person perspective.
 
     Question: "{question}"
     Knowledge Point: "{knowledge_point}"
-    User Reply: "{reply}"
+    User Input: "{user_input}"
     """
     result = ''
     logger.debug(prompt)
     try:
-        result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
+        result = get_response_from_llm(prompt)
     except Exception as e:
         logger.exception(e)
     return result
