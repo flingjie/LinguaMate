@@ -4,17 +4,17 @@ from utils.response import split_think_content
 from log import logger
 
 
-def get_response_from_llm(prompt, model_name=ModelName.QWEN.value):
+def get_response_from_llm(prompt, model_name=ModelName.QWEN):
     messages = [{"role": "user", "content": prompt}]
     return chat_with_llm(messages, model_name)
 
 
-def chat_with_llm(messages, model_name=ModelName.QWEN.value):
+def chat_with_llm(messages, model_name=ModelName.QWEN):
     try:
         # logger.debug(f"model_name: {model_name}")
         api_base = API_BASE_MAP[model_name]
         response = completion(
-            model=model_name, 
+            model=model_name.value, 
             messages=messages,
             api_base=api_base
         )

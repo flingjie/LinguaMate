@@ -48,7 +48,7 @@ def get_word_hint(word, meaning, theme="realistic"):
     ## Restrictions
     - The Result should be less than 600 words.
     """
-    result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
+    result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3)
     return result
 
 if __name__ == "__main__":

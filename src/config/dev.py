@@ -32,8 +32,8 @@ class ModelName(Enum):
 
 
 API_BASE_MAP = {
-    ModelName.DEEPSEEK7B.value: 'http://localhost:11434',
-    ModelName.DEEPSEEK14B.value: 'http://localhost:11434',
-    ModelName.QWEN.value: 'http://localhost:11434',
-    ModelName.ARK_DEEPSEEKV3.value: 'https://ark.cn-beijing.volces.com/api/v3',
+    ModelName.DEEPSEEK7B: 'http://localhost:11434',
+    ModelName.DEEPSEEK14B: 'http://localhost:11434',
+    ModelName.QWEN: 'http://localhost:11434',
+    ModelName.ARK_DEEPSEEKV3: 'https://ark.cn-beijing.volces.com/api/v3',
 }

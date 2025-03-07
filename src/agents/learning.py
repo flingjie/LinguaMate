@@ -26,7 +26,7 @@ def generate_questions(content):
     # logger.debug(prompt)
     result = ''
     try:
-        result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3.value)
+        result = get_response_from_llm(prompt, model_name=ModelName.ARK_DEEPSEEKV3)
         result = json_repair.loads(result)
     except Exception as e:
         logger.exception(e)
